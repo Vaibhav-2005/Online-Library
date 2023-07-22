@@ -1,0 +1,118 @@
+class Library {
+    String[] books;
+    int noOfBooks;
+    Library() {
+        this.books= new String[100];
+        this.noOfBooks = 0;
+    }
+
+    public void addBook(String book){
+        books[noOfBooks++] = book;
+        System.out.println(book+" Book Added Successfully");
+        System.out.println();
+    }
+}
+
+class issued extends Library {
+    String[] issuedBook;
+    int noOfIssuedBooks;
+    public issued() {
+        issuedBook = new String[100];
+        noOfIssuedBooks=0;
+    }
+    public void issueBook(String book){
+        boolean b= true;
+        int i;
+        System.out.println();
+        for(i=0;i<noOfBooks;i++)
+        {
+            if(books[i].equals(book))
+            {
+                System.out.println(book+" Book Found");
+                for(int j=0;j<noOfIssuedBooks;j++)
+                {
+                    if(issuedBook[j].equals(book))
+                    {
+                        System.out.println(book+"Book already Issued");
+                        b= false;
+                        break;
+                    }
+                }
+                if(b)                  //yaad rkhiyo yahan pr b==true lgana hai
+                {
+                    issuedBook[noOfIssuedBooks++]=book;
+                    System.out.println(book +" Book Issued Successfully");
+                    break;
+                }
+            }
+        }
+        if(i==noOfBooks)
+        {
+            System.out.println("Sorry! No such Book found in Library");
+        }
+    }
+    public void showAvailableBooks() {
+        boolean c = true;
+        System.out.println();
+        System.out.println("Available Books are");
+        for(int i=0;i<noOfBooks;i++)
+        {
+            for(int j=0;j<noOfIssuedBooks;j++)
+            {
+                if (books[i].equals(issuedBook[j])) {
+                    c = false;
+                    break;
+                }
+            }
+            if(c)
+            {
+                System.out.println(books[i]);
+            }
+            else c = true;
+        }
+    }
+}
+
+class CompleteLib extends issued {
+    public void returnBook(String book){
+        boolean d = true;
+        System.out.println();
+        for(int k=0;k<noOfIssuedBooks;k++)
+        {
+            if(issuedBook[k].equals(book))
+            {
+                for(int j=k;k<noOfIssuedBooks;k++) {
+                    issuedBook[k] = issuedBook[k + 1];
+                }
+                noOfIssuedBooks--;
+                k--;
+                System.out.println(book +" Book Returned Successfully");
+                d = false;
+                break;
+            }
+        }
+        if(d)
+        {
+            System.out.println(book +" Book Not Found in Issued List");
+        }
+    }
+}
+
+public class Exercise4_51 {
+    public static void main(String[] args) {
+        CompleteLib central = new CompleteLib();
+        central.addBook("maths");
+        central.addBook("java");
+        central.addBook("epicShit");
+        central.addBook("cpp");
+        central.issueBook("cpp");
+        central.issueBook("java");
+        central.issueBook("maths");
+        central.returnBook("maths");
+        central.returnBook("cpp");
+        central.returnBook("c");
+        central.returnBook("java");
+        central.showAvailableBooks();
+        System.out.println("Ghost");
+    }
+}
